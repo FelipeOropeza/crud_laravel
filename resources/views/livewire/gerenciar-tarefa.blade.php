@@ -1,8 +1,7 @@
 <div class="p-4 max-w-4xl mx-auto">
     <h2 class="text-xl font-bold mb-6 text-gray-900 dark:text-gray-100">Lista de Tarefas</h2>
 
-    <form wire:submit.prevent="adicionar" class="mb-6 flex flex-wrap gap-4 items-end">
-        <!-- Título -->
+    <form wire:submit.prevent="adicionar" class="mb-6 flex flex-wrap gap-4 items-start">
         <div class="flex-1 min-w-[200px]">
             <label for="titulo" class="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">Título</label>
             <input type="text" id="titulo" wire:model="novaTarefa.titulo"
@@ -14,13 +13,12 @@
                 placeholder="Título da tarefa" />
             @error('novaTarefa.titulo')
                 <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
-                     x-transition class="text-red-600 dark:text-red-400 text-sm mt-1">
+                     x-transition class="text-red-600 dark:text-red-400 text-sm mt-1 min-h-[1.25rem]">
                     {{ $message }}
                 </div>
             @enderror
         </div>
 
-        <!-- Descrição -->
         <div class="flex-1 min-w-[300px]">
             <label for="descricao" class="block text-sm font-medium mb-1 text-gray-900 dark:text-gray-100">Descrição</label>
             <input type="text" id="descricao" wire:model="novaTarefa.descricao"
@@ -32,7 +30,7 @@
                 placeholder="Descrição breve" />
             @error('novaTarefa.descricao')
                 <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
-                     x-transition class="text-red-600 dark:text-red-400 text-sm mt-1">
+                     x-transition class="text-red-600 dark:text-red-400 text-sm mt-1 min-h-[1.25rem]">
                     {{ $message }}
                 </div>
             @enderror
@@ -60,10 +58,9 @@
             @enderror
         </div>
 
-        <!-- Botão -->
         <div class="flex items-center">
             <button type="submit"
-                class="bg-blue-500 hover:bg-blue-600 transition text-white px-5 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                class="bg-blue-500 hover:bg-blue-600 transition text-white px-5 py-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-6">
                 Adicionar
             </button>
         </div>
