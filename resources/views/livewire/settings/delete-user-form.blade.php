@@ -12,9 +12,15 @@ new class extends Component {
      */
     public function deleteUser(Logout $logout): void
     {
-        $this->validate([
-            'password' => ['required', 'string', 'current_password'],
-        ]);
+        $this->validate(
+            [
+                'password' => ['required', 'string', 'current_password'],
+            ],
+            [
+                'password.required' => 'A senha é obrigatória.',
+                'password.current_password' => 'A senha informada está incorreta.',
+            ]
+        );
 
         tap(Auth::user(), $logout(...))->delete();
 
