@@ -35,6 +35,10 @@
             </button>
         </div>
     </form>
+    <div class="mb-6">
+        <input type="text" wire:model.live="search" placeholder="Pesquisar tarefas..."
+            class="w-full rounded border px-3 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+    </div>
 
     @if(count($tarefas) > 0)
         <ul class="space-y-3 text-gray-900 dark:text-gray-100">

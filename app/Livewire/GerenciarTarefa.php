@@ -3,18 +3,19 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\Reactive;
 use App\Models\Tarefa;
 use Illuminate\Support\Facades\Auth;
 
 class GerenciarTarefa extends Component
 {
+    public $modalAberto = false;
+    public $search = '';
     public $novaTarefa = [
         'titulo' => '',
         'descricao' => '',
         'status' => '',
     ];
-
-    public $modalAberto = false;
     public $tarefaEditada = [
         'id' => null,
         'titulo' => '',
@@ -99,10 +100,15 @@ class GerenciarTarefa extends Component
         $this->modalAberto = false;
     }
 
-
     public function render()
     {
-        $tarefas = Tarefa::where('user_id', Auth::id())->latest()->get();
+        $tarefas = Tarefa::where('user_id', Auth::id())
+            ->where(function ($query) {
+                $query->where('titulo', 'like', '%' . $this->search . '%')
+                    ->orWhere('descricao', 'like', '%' . $this->search . '%');
+            })
+            ->latest()
+            ->get();
 
         return view('livewire.gerenciar-tarefa', ['tarefas' => $tarefas]);
     }
