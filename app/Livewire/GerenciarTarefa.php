@@ -14,6 +14,14 @@ class GerenciarTarefa extends Component
         'status' => '',
     ];
 
+    public $modalAberto = false;
+    public $tarefaEditada = [
+        'id' => null,
+        'titulo' => '',
+        'descricao' => '',
+        'status' => '',
+    ];
+
     public function adicionar()
     {
         $this->validate(
@@ -47,6 +55,50 @@ class GerenciarTarefa extends Component
             $tarefa->delete();
         }
     }
+
+    public function abrirModalEditar($id)
+    {
+        $tarefa = Tarefa::where('id', $id)->where('user_id', Auth::id())->first();
+
+        if ($tarefa) {
+            $this->tarefaEditada = [
+                'id' => $tarefa->id,
+                'titulo' => $tarefa->titulo,
+                'descricao' => $tarefa->descricao,
+                'status' => $tarefa->status,
+            ];
+
+            $this->modalAberto = true;
+        }
+    }
+
+    public function salvarAtualizacao()
+    {
+        $this->validate([
+            'tarefaEditada.titulo' => 'required|string|max:255',
+            'tarefaEditada.descricao' => 'required|string',
+            'tarefaEditada.status' => 'nullable|string',
+        ], [
+            'tarefaEditada.titulo.required' => 'O título é obrigatório.',
+            'tarefaEditada.titulo.max' => 'O título deve ter no máximo 255 caracteres.',
+            'tarefaEditada.descricao.required' => 'A descrição é obrigatória.',
+        ]);
+
+        $tarefa = Tarefa::where('id', $this->tarefaEditada['id'])
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($tarefa) {
+            $tarefa->update([
+                'titulo' => $this->tarefaEditada['titulo'],
+                'descricao' => $this->tarefaEditada['descricao'],
+                'status' => $this->tarefaEditada['status'] ?: 'pendente',
+            ]);
+        }
+
+        $this->modalAberto = false;
+    }
+
 
     public function render()
     {
